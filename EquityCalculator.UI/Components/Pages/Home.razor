@@ -1,0 +1,72 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>Equity Calculator</PageTitle>
+
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <div class="card p-4 shadow">
+                <h2 class="card-title">Equity Calculator</h2>
+                <div class="card-body">
+                    <EditForm Model="PaymentRequest" OnValidSubmit="CalculatePaymentSchedules" FormName="equityCalculatorForm">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="mb-3">
+                            <label for="sellingPrice" class="form-label">Selling Price</label>
+                            <InputNumber class="form-control" id="sellingPrice" @bind-Value="PaymentRequest.SellingPrice" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="reservationDate" class="form-label">Reservation Date</label>
+                            <InputDate class="form-control" id="reservationDate" @bind-Value="PaymentRequest.ReservationDate" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="term" class="form-label">Term</label>
+                            <InputNumber class="form-control" id="term" @bind-Value="PaymentRequest.EquityTerm" />
+                        </div>
+                        <button class="btn btn-primary" type="submit">Go</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            @if (PaymentSchedules != null && PaymentSchedules.Count > 0)
+            {
+                <div class="card p-4 shadow">
+                    <h2 class="card-title">Payment Schedules</h2>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Balance</th>
+                                    <th>Due Date</th>
+                                    <th>Term</th>
+                                    <th>Amount</th>
+                                    <th>Interest</th>
+                                    <th>Insurance</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var schedule in PaymentSchedules)
+                                {
+                                    <tr>
+                                        <td>@schedule.Balance</td>
+                                        <td>@schedule.DueDate.ToShortDateString()</td>
+                                        <td>@schedule.Term</td>
+                                        <td>@schedule.PaymentDetails.Amount</td>
+                                        <td>@schedule.PaymentDetails.Interest</td>
+                                        <td>@schedule.PaymentDetails.Insurance</td>
+                                        <td>@schedule.PaymentDetails.Total</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
