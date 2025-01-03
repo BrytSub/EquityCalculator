@@ -4,15 +4,8 @@ namespace EquityCalculator.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentController : ControllerBase
+    public class PaymentController(IPaymentService _paymentService) : ControllerBase
     {
-        private readonly IPaymentService _paymentService;
-
-        public PaymentController(IPaymentService paymentService)
-        {
-            _paymentService = paymentService;
-        }
-
         [HttpGet("calculate")]
         public IActionResult Calculate([FromQuery] decimal sellingPrice, [FromQuery] DateTime reservationDate, [FromQuery] int equityTerm)
         {
